@@ -62,10 +62,14 @@ pipeline {
 
     post {
         success {
-            // Additional steps to perform on success
+            // Actions to take upon successful build
+            echo 'Build successful! Add your success steps here.'
+            // For example: Send notifications, deploy to production, etc.
         }
         failure {
-            // Additional steps to perform on failure
+            // Actions to take upon build failure
+            echo 'Build failed! Add your failure steps here.'
+            // For example: Send notifications, rollback changes, etc.
         }
     }
 }
