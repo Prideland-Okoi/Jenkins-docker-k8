@@ -1,7 +1,7 @@
 import pytest
 from flask import Flask
 
-from Jenkins-docker-k8 import app
+from app import app
 
 @pytest.fixture
 def client():
