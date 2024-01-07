@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define environment variables as needed
+        DOCKER_REGISTRY = "your-docker-registry-url"  // Replace with your Docker registry URL
+        DOCKER_IMAGE_NAME = "testing-jenkins"
+        DOCKER_IMAGE_TAG = "latest"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    // Build and push Docker image
+                    docker.build("${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                    docker.withRegistry("${DOCKER_REGISTRY}", 'docker-credentials-id') {
+                        docker.image("${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Use kubectl to apply the Kubernetes deployment and service files
+                    sh 'kubectl apply -f Jenkins-docker-k8/kubernetes/deployment.yaml'
+                    sh 'kubectl apply -f Jenkins-docker-k8/kubernetes/service.yaml'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up resources or perform any necessary post-build tasks
+        }
+    }
+}
