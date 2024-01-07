@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Define environment variables as needed
-        DOCKER_REGISTRY = "your-docker-registry-url"  // Replace with your Docker registry URL
+        DOCKER_REGISTRY = "docker.io/prideland"  // Replace with your Docker registry URL
         DOCKER_IMAGE_NAME = "testing-jenkins"
         DOCKER_IMAGE_TAG = "latest"
     }
